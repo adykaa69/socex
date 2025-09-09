@@ -1,0 +1,31 @@
+services:
+  socex-service:
+    build: ..
+    image: socex/backend
+    container_name: socex-backend
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      CONFIG_ENV: ${PROFILE_ARG}
+      MYSQL_JDBC_URL: ${MYSQL_JDBC_URL}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - backend
+  mysql:
+    image: mysql:8.0.36
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: socex_db
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - backend
+
+networks:
+  backend: { }
