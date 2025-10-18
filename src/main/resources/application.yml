@@ -5,6 +5,9 @@ spring:
     password: ${MYSQL_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
