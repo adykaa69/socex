@@ -19,12 +19,11 @@ public class CompanyService implements CompanyUseCaseFacade {
 
     @Override
     public Company create(Company company) {
-        String name = company.getName();
+        String name = company.name();
         if (companyRepository.existsByName(name)) {
             throw new IllegalArgumentException("Company already exists: " + name);
         }
-        Company createdCompany = Company.ofNew(name);
-        return companyRepository.save(createdCompany);
+        return companyRepository.save(company);
     }
 
     @Override

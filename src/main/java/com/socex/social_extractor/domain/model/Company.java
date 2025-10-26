@@ -1,30 +1,41 @@
 package com.socex.social_extractor.domain.model;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
-public class Company {
-    private final UUID id;
-    private final String name;
-    private final Instant createdAt;
+public record Company(
+        UUID id,
+        String name,
+        Instant createdAt
+) {
 
-    public Company(UUID id, String name, Instant createdAt) {
-        this.id = id;
-        this.name = name;
-        this.createdAt = createdAt;
+    public static CompanyBuilder builder() {
+        return new CompanyBuilder();
     }
 
-    public UUID getId() { return id; }
-    public  String getName() { return name; }
-    public Instant getCreatedAt() { return createdAt; }
+    public static class CompanyBuilder {
+        private UUID id;
+        private String name;
+        private Instant createdAt;
 
-    public static Company ofNew(String name) {
-        Objects.requireNonNull(name, "Company name cannot be null");
-        if (name.isBlank()) {
-            throw new IllegalArgumentException("Company name cannot be blank");
+        public CompanyBuilder id(UUID id) {
+            this.id = id;
+            return this;
         }
-        return new Company(UUID.randomUUID(), name, Instant.now());
+
+        public CompanyBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public CompanyBuilder createdAt(Instant createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Company build() {
+            return new Company(id, name, createdAt);
+        }
     }
 }
 
