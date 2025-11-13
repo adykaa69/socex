@@ -1,4 +1,4 @@
-package com.socex.social_extractor.adapters.outbound.persistence.repository;
+package com.socex.social_extractor.adapters.outbound.persistence.repository.company;
 
 import com.socex.social_extractor.adapters.outbound.persistence.entity.CompanyEntity;
 import com.socex.social_extractor.adapters.outbound.persistence.mapper.CompanyPersistenceMapper;
@@ -12,10 +12,10 @@ import java.util.UUID;
 @Repository
 public class CompanyPersistenceAdapter implements CompanyRepository {
 
-    private final SpringDataCompanyRepository companyRepository;
+    private final CompanySpringDataRepository companyRepository;
     private final CompanyPersistenceMapper companyPersistenceMapper;
 
-    public CompanyPersistenceAdapter(SpringDataCompanyRepository companyRepository,
+    public CompanyPersistenceAdapter(CompanySpringDataRepository companyRepository,
                                      CompanyPersistenceMapper companyPersistenceMapper) {
         this.companyRepository = companyRepository;
         this.companyPersistenceMapper = companyPersistenceMapper;
