@@ -12,22 +12,6 @@ public record SocialAccount(
         Instant createdAt
 ) {
 
-//    private final UUID id;
-//    private final UUID companyId;
-//    private final SocialAccountPlatform platform;
-//    private final String accountUrl;
-//    private final String accountId;
-//    private final Instant createdAt;
-//
-//    private SocialAccount(UUID id, UUID companyId, SocialAccountPlatform platform, String accountUrl, String accountId, Instant createdAt) {
-//        this.id = id;
-//        this.companyId = DomainValidator.notNull(companyId, "companyId");
-//        this.platform = DomainValidator.notNull(platform, "platform");
-//        this.accountUrl = DomainValidator.notNullOrBlank(accountUrl, "accountUrl");
-//        this.accountId = accountId;
-//        this.createdAt = createdAt;
-//    }
-
     public static SocialAccountBuilder builder() {
         return new SocialAccountBuilder();
     }
