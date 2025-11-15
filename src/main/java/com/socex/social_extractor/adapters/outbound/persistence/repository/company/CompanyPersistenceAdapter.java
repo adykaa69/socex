@@ -7,6 +7,7 @@ import com.socex.social_extractor.domain.repository.CompanyRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -29,10 +30,9 @@ public class CompanyPersistenceAdapter implements CompanyRepository {
     }
 
     @Override
-    public Company findById(UUID id) {
-        CompanyEntity companyEntity = companyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Company not found with id: " + id));
-        return companyPersistenceMapper.companyEntityToCompany(companyEntity);
+    public Optional<Company> findById(UUID id) {
+        return companyRepository.findById(id)
+                .map(companyPersistenceMapper::companyEntityToCompany);
     }
 
     @Override
@@ -43,11 +43,12 @@ public class CompanyPersistenceAdapter implements CompanyRepository {
     }
 
     @Override
-    public Company deleteById(UUID id) {
-        CompanyEntity companyEntity = companyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Company not found with id: " + id));
-        companyRepository.delete(companyEntity);
-        return companyPersistenceMapper.companyEntityToCompany(companyEntity);
+    public Optional<Company> deleteById(UUID id) {
+        return companyRepository.findById(id)
+                .map(company -> {
+                    companyRepository.delete(company);
+                    return companyPersistenceMapper.companyEntityToCompany(company);
+                });
     }
 
     @Override

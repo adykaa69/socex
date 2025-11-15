@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -24,13 +25,19 @@ public class CompanyEntity {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
+    @UpdateTimestamp(source = SourceType.DB)
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
     public CompanyEntity() {}
 
     public UUID getId() { return id; }
     public String getName() { return name; }
     public Instant getCreatedAt() { return createdAt; }
+    public Instant getUpdatedAt() { return updatedAt; }
 
     public void setId(UUID id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 }

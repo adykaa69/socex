@@ -6,6 +6,7 @@ import com.socex.social_extractor.adapters.inbound.web.dto.platform.PlatformResp
 import com.socex.social_extractor.adapters.inbound.web.mapper.CompanyWebMapper;
 import com.socex.social_extractor.application.service.company.CompanyUseCaseFacade;
 import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
+import com.socex.social_extractor.application.service.company.command.UpdateCompanyCommand;
 import com.socex.social_extractor.domain.model.Company;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -71,6 +73,20 @@ public class CompanyController {
         Company deletedCompany = companyUseCaseFacade.delete(id);
         CompanyResponse companyResponse = companyWebMapper.companyToCompanyResponse(deletedCompany);
         return new PlatformResponse<>("success", "Company deleted successfully", companyResponse);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PlatformResponse<CompanyResponse> updateCompany(
+            @PathVariable UUID id,
+            @Valid @RequestBody CompanyRequest companyRequest
+    ) {
+        UpdateCompanyCommand command =
+                companyWebMapper.companyRequestToUpdateCompanyCommand(id, companyRequest);
+        Company updatedCompany = companyUseCaseFacade.update(command);
+        CompanyResponse companyResponse =
+                companyWebMapper.companyToCompanyResponse(updatedCompany);
+        return new PlatformResponse<>("success", "Company updated successfully", companyResponse);
     }
 
 }

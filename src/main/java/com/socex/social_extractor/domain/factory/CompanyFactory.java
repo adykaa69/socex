@@ -1,6 +1,7 @@
 package com.socex.social_extractor.domain.factory;
 
 import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
+import com.socex.social_extractor.application.service.company.command.UpdateCompanyCommand;
 import com.socex.social_extractor.domain.model.Company;
 
 import java.util.UUID;
@@ -11,6 +12,14 @@ public class CompanyFactory {
         return Company.builder()
                 .id(UUID.randomUUID())
                 .name(command.name())
+                .build();
+    }
+
+    public static Company update(Company existingCompany, UpdateCompanyCommand command) {
+        return Company.builder()
+                .id(existingCompany.id())
+                .name(command.name())
+                .createdAt(existingCompany.createdAt())
                 .build();
     }
 }
