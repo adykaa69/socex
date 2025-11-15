@@ -1,6 +1,8 @@
 package com.socex.social_extractor.application.interactor;
 
 import com.socex.social_extractor.application.service.social_account.SocialAccountUseCaseFacade;
+import com.socex.social_extractor.application.service.social_account.command.CreateSocialAccountCommand;
+import com.socex.social_extractor.domain.factory.SocialAccountFactory;
 import com.socex.social_extractor.domain.model.SocialAccount;
 import com.socex.social_extractor.domain.model.SocialAccountPlatform;
 import com.socex.social_extractor.domain.repository.SocialAccountRepository;
@@ -19,7 +21,8 @@ public class SocialAccountService implements SocialAccountUseCaseFacade {
     }
 
     @Override
-    public SocialAccount create(SocialAccount socialAccount) {
+    public SocialAccount create(CreateSocialAccountCommand command) {
+        SocialAccount socialAccount = SocialAccountFactory.create(command);
         return socialAccountRepository.save(socialAccount);
     }
 

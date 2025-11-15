@@ -6,7 +6,6 @@ import com.socex.social_extractor.adapters.inbound.web.dto.platform.PlatformResp
 import com.socex.social_extractor.adapters.inbound.web.mapper.CompanyWebMapper;
 import com.socex.social_extractor.application.service.company.CompanyUseCaseFacade;
 import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
-import com.socex.social_extractor.domain.factory.CompanyFactory;
 import com.socex.social_extractor.domain.model.Company;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -58,10 +57,11 @@ public class CompanyController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlatformResponse<CompanyResponse> createCompany(@Valid @RequestBody CompanyRequest companyRequest) {
-        CreateCompanyCommand createCompanyCommand = companyWebMapper.companyRequestToCreateCompanyCommand(companyRequest);
-        Company company = CompanyFactory.create(createCompanyCommand);
-        Company savedCompany = companyUseCaseFacade.create(company);
-        CompanyResponse companyResponse = companyWebMapper.companyToCompanyResponse(savedCompany);
+        CreateCompanyCommand command =
+                companyWebMapper.companyRequestToCreateCompanyCommand(companyRequest);
+        Company savedCompany = companyUseCaseFacade.create(command);
+        CompanyResponse companyResponse =
+                companyWebMapper.companyToCompanyResponse(savedCompany);
         return new PlatformResponse<>("success", "Company created successfully", companyResponse);
     }
 
