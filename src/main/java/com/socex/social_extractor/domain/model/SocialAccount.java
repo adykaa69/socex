@@ -1,5 +1,7 @@
 package com.socex.social_extractor.domain.model;
 
+import com.socex.social_extractor.domain.shared.DomainValidator;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -11,6 +13,12 @@ public record SocialAccount(
         String accountId,
         Instant createdAt
 ) {
+
+    public SocialAccount {
+        DomainValidator.notNull(company, "Company");
+        DomainValidator.notNull(platform, "Platform");
+        DomainValidator.notNullOrBlank(accountUrl, "Account URL");
+    }
 
     public static SocialAccountBuilder builder() {
         return new SocialAccountBuilder();

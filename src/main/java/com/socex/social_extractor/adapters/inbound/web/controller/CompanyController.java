@@ -8,6 +8,7 @@ import com.socex.social_extractor.application.service.company.CompanyUseCaseFaca
 import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
 import com.socex.social_extractor.domain.factory.CompanyFactory;
 import com.socex.social_extractor.domain.model.Company;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +57,7 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PlatformResponse<CompanyResponse> createCompany(@RequestBody CompanyRequest companyRequest) {
+    public PlatformResponse<CompanyResponse> createCompany(@Valid @RequestBody CompanyRequest companyRequest) {
         CreateCompanyCommand createCompanyCommand = companyWebMapper.companyRequestToCreateCompanyCommand(companyRequest);
         Company company = CompanyFactory.create(createCompanyCommand);
         Company savedCompany = companyUseCaseFacade.create(company);
