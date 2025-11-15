@@ -7,7 +7,6 @@ import com.socex.social_extractor.adapters.inbound.web.dto.social_account.Social
 import com.socex.social_extractor.adapters.inbound.web.mapper.SocialAccountWebMapper;
 import com.socex.social_extractor.application.service.social_account.SocialAccountUseCaseFacade;
 import com.socex.social_extractor.application.service.social_account.command.CreateSocialAccountCommand;
-import com.socex.social_extractor.domain.factory.SocialAccountFactory;
 import com.socex.social_extractor.domain.model.SocialAccount;
 import com.socex.social_extractor.domain.model.SocialAccountPlatform;
 import jakarta.validation.Valid;
@@ -74,10 +73,11 @@ public class SocialAccountController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlatformResponse<SocialAccountResponse> createSocialAccount(@Valid @RequestBody SocialAccountRequest socialAccountRequest) {
-        CreateSocialAccountCommand createSocialAccountCommand = socialAccountWebMapper.socialAccountRequestToCreateSocialAccountCommand(socialAccountRequest);
-        SocialAccount socialAccount = SocialAccountFactory.create(createSocialAccountCommand);
-        SocialAccount savedSocialAccount = socialAccountUseCaseFacade.create(socialAccount);
-        SocialAccountResponse socialAccountResponse = socialAccountWebMapper.socialAccountToSocialAccountResponse(savedSocialAccount);
+        CreateSocialAccountCommand command =
+                socialAccountWebMapper.socialAccountRequestToCreateSocialAccountCommand(socialAccountRequest);
+        SocialAccount savedSocialAccount = socialAccountUseCaseFacade.create(command);
+        SocialAccountResponse socialAccountResponse =
+                socialAccountWebMapper.socialAccountToSocialAccountResponse(savedSocialAccount);
         return new PlatformResponse<>("success", "Social account created successfully", socialAccountResponse);
     }
 

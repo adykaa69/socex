@@ -1,6 +1,8 @@
 package com.socex.social_extractor.application.interactor;
 
 import com.socex.social_extractor.application.service.company.CompanyUseCaseFacade;
+import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
+import com.socex.social_extractor.domain.factory.CompanyFactory;
 import com.socex.social_extractor.domain.model.Company;
 import com.socex.social_extractor.domain.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,14 @@ public class CompanyService implements CompanyUseCaseFacade {
     }
 
     @Override
-    public Company create(Company company) {
-        String name = company.name();
+    public Company create(CreateCompanyCommand command) {
+        String name = command.name();
         if (companyRepository.existsByName(name)) {
             throw new IllegalArgumentException("Company already exists: " + name);
         }
+
+        Company company = CompanyFactory.create(command);
+
         return companyRepository.save(company);
     }
 
