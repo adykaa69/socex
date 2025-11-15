@@ -7,15 +7,13 @@ import java.util.Objects;
 
 public final class DomainValidator {
 
-    public static String notNullOrBlank(String value, String fieldName) {
+    public static void notNullOrBlank(String value, String fieldName) {
         if (StringUtils.isBlank(value)) {
             throw new IllegalArgumentException(fieldName + " cannot be null or blank");
         }
-        return value;
     }
 
-    public static <T> T notNull(T value, String fieldName) {
+    public static <T> void notNull(T value, String fieldName) {
         Objects.requireNonNull(value, fieldName + " cannot be null");
-        return value;
     }
 }

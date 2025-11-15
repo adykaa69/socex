@@ -10,6 +10,7 @@ import com.socex.social_extractor.application.service.social_account.command.Cre
 import com.socex.social_extractor.domain.factory.SocialAccountFactory;
 import com.socex.social_extractor.domain.model.SocialAccount;
 import com.socex.social_extractor.domain.model.SocialAccountPlatform;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,7 +73,7 @@ public class SocialAccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PlatformResponse<SocialAccountResponse> createSocialAccount(@RequestBody SocialAccountRequest socialAccountRequest) {
+    public PlatformResponse<SocialAccountResponse> createSocialAccount(@Valid @RequestBody SocialAccountRequest socialAccountRequest) {
         CreateSocialAccountCommand createSocialAccountCommand = socialAccountWebMapper.socialAccountRequestToCreateSocialAccountCommand(socialAccountRequest);
         SocialAccount socialAccount = SocialAccountFactory.create(createSocialAccountCommand);
         SocialAccount savedSocialAccount = socialAccountUseCaseFacade.create(socialAccount);

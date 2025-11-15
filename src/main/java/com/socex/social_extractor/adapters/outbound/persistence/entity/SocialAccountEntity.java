@@ -25,7 +25,6 @@ public class SocialAccountEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "platform", nullable = false)
-//    @JdbcType(MySQLEnumJdbcType.class)
     private SocialAccountPlatform platform;
 
     @Column(name = "account_url",  nullable = false)
