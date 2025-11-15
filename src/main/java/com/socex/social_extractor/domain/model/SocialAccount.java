@@ -11,7 +11,8 @@ public record SocialAccount(
         SocialAccountPlatform platform,
         String accountUrl,
         String accountId,
-        Instant createdAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 
     public SocialAccount {
@@ -31,6 +32,7 @@ public record SocialAccount(
         private String accountUrl;
         private String accountId;
         private Instant createdAt;
+        private Instant updatedAt;
 
         public SocialAccountBuilder id(UUID id) {
             this.id = id;
@@ -62,8 +64,13 @@ public record SocialAccount(
             return this;
         }
 
+        public SocialAccountBuilder updatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         public SocialAccount build() {
-            return new SocialAccount(id, company, platform, accountUrl, accountId, createdAt);
+            return new SocialAccount(id, company, platform, accountUrl, accountId, createdAt, updatedAt);
         }
     }
 }

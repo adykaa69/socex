@@ -7,4 +7,5 @@ public interface SocialAccountUseCaseFacade extends
         GetSocialAccountByIdUseCase,
         ListAllSocialAccountsUseCase,
         ListSocialAccountsByCompanyIdUseCase,
-        ListSocialAccountsByPlatformUseCase {}
+        ListSocialAccountsByPlatformUseCase,
+        UpdateSocialAccountUseCase {}

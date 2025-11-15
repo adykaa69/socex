@@ -7,6 +7,7 @@ import com.socex.social_extractor.adapters.inbound.web.dto.social_account.Social
 import com.socex.social_extractor.adapters.inbound.web.mapper.SocialAccountWebMapper;
 import com.socex.social_extractor.application.service.social_account.SocialAccountUseCaseFacade;
 import com.socex.social_extractor.application.service.social_account.command.CreateSocialAccountCommand;
+import com.socex.social_extractor.application.service.social_account.command.UpdateSocialAccountCommand;
 import com.socex.social_extractor.domain.model.SocialAccount;
 import com.socex.social_extractor.domain.model.SocialAccountPlatform;
 import jakarta.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,5 +89,19 @@ public class SocialAccountController {
         SocialAccount deletedSocialAccount = socialAccountUseCaseFacade.delete(id);
         SocialAccountResponse socialAccountResponse = socialAccountWebMapper.socialAccountToSocialAccountResponse(deletedSocialAccount);
         return new PlatformResponse<>("success", "Social account deleted successfully", socialAccountResponse);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PlatformResponse<SocialAccountResponse> updateSocialAccount(
+            @PathVariable UUID id,
+            @Valid @RequestBody SocialAccountRequest socialAccountRequest
+    ) {
+        UpdateSocialAccountCommand command =
+                socialAccountWebMapper.socialAccountRequestToUpdateSocialAccountCommand(id, socialAccountRequest);
+        SocialAccount updatedSocialAccount = socialAccountUseCaseFacade.update(command);
+        SocialAccountResponse socialAccountResponse =
+                socialAccountWebMapper.socialAccountToSocialAccountResponse(updatedSocialAccount);
+        return new PlatformResponse<>("success", "Social account updated successfully", socialAccountResponse);
     }
 }

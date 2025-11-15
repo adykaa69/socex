@@ -9,5 +9,6 @@ public record SocialAccountResponse(
         String platform,
         String accountUrl,
         String accountId,
-        Instant createdAt
+        Instant createdAt,
+        Instant updatedAt
 ) {}
