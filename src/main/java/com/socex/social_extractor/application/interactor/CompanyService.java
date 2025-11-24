@@ -2,6 +2,7 @@ package com.socex.social_extractor.application.interactor;
 
 import com.socex.social_extractor.application.service.company.CompanyUseCaseFacade;
 import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
+import com.socex.social_extractor.application.service.company.command.UpdateCompanyCommand;
 import com.socex.social_extractor.domain.factory.CompanyFactory;
 import com.socex.social_extractor.domain.model.Company;
 import com.socex.social_extractor.domain.repository.CompanyRepository;
@@ -33,7 +34,8 @@ public class CompanyService implements CompanyUseCaseFacade {
 
     @Override
     public Company getCompany(UUID id) {
-        return companyRepository.findById(id);
+        return companyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with id: " + id));
     }
 
     @Override
@@ -43,6 +45,21 @@ public class CompanyService implements CompanyUseCaseFacade {
 
     @Override
     public Company delete(UUID id) {
-        return companyRepository.deleteById(id);
+        return companyRepository.deleteById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with id: " + id));
+    }
+
+    @Override
+    public Company update(UpdateCompanyCommand command) {
+        Company existingCompany = getCompany(command.id());
+
+        if (!existingCompany.name().equals(command.name())
+                && companyRepository.existsByName(command.name())) {
+            throw new IllegalArgumentException("Company name already exists: " + command.name());
+        }
+
+        Company updatedCompany = CompanyFactory.update(existingCompany, command);
+
+        return companyRepository.save(updatedCompany);
     }
 }

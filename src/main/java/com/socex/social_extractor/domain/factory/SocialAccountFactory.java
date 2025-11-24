@@ -1,6 +1,7 @@
 package com.socex.social_extractor.domain.factory;
 
 import com.socex.social_extractor.application.service.social_account.command.CreateSocialAccountCommand;
+import com.socex.social_extractor.application.service.social_account.command.UpdateSocialAccountCommand;
 import com.socex.social_extractor.domain.model.Company;
 import com.socex.social_extractor.domain.model.SocialAccount;
 
@@ -19,6 +20,17 @@ public class SocialAccountFactory {
                 .platform(command.platform())
                 .accountUrl(command.accountUrl())
                 .accountId(command.accountId())
+                .build();
+    }
+
+    public static SocialAccount update(SocialAccount existingSocialAccount, UpdateSocialAccountCommand command) {
+        return SocialAccount.builder()
+                .id(existingSocialAccount.id())
+                .company(existingSocialAccount.company())
+                .platform(command.platform())
+                .accountUrl(command.accountUrl())
+                .accountId(command.accountId())
+                .createdAt(existingSocialAccount.createdAt())
                 .build();
     }
 }

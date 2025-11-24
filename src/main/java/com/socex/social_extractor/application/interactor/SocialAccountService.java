@@ -2,6 +2,7 @@ package com.socex.social_extractor.application.interactor;
 
 import com.socex.social_extractor.application.service.social_account.SocialAccountUseCaseFacade;
 import com.socex.social_extractor.application.service.social_account.command.CreateSocialAccountCommand;
+import com.socex.social_extractor.application.service.social_account.command.UpdateSocialAccountCommand;
 import com.socex.social_extractor.domain.factory.SocialAccountFactory;
 import com.socex.social_extractor.domain.model.SocialAccount;
 import com.socex.social_extractor.domain.model.SocialAccountPlatform;
@@ -28,7 +29,8 @@ public class SocialAccountService implements SocialAccountUseCaseFacade {
 
     @Override
     public SocialAccount getSocialAccountById(UUID id) {
-        return socialAccountRepository.findById(id);
+        return socialAccountRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("SocialAccount not found with id: " + id));
     }
 
     @Override
@@ -52,6 +54,16 @@ public class SocialAccountService implements SocialAccountUseCaseFacade {
 
     @Override
     public SocialAccount delete(UUID id) {
-        return socialAccountRepository.deleteById(id);
+        return socialAccountRepository.deleteById(id)
+                .orElseThrow(() -> new IllegalArgumentException("SocialAccount not found with id: " + id));
+    }
+
+    @Override
+    public SocialAccount update(UpdateSocialAccountCommand command) {
+        SocialAccount existingSocialAccount = getSocialAccountById(command.id());
+
+        SocialAccount updatedSocialAccount = SocialAccountFactory.update(existingSocialAccount, command);
+
+        return socialAccountRepository.save(updatedSocialAccount);
     }
 }

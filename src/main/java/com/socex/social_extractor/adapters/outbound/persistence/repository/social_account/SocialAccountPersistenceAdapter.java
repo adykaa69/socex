@@ -8,6 +8,7 @@ import com.socex.social_extractor.domain.repository.SocialAccountRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -30,10 +31,9 @@ public class SocialAccountPersistenceAdapter implements SocialAccountRepository 
     }
 
     @Override
-    public SocialAccount findById(UUID id) {
-        SocialAccountEntity socialAccountEntity = socialAccountRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("SocialAccount not found with id: " + id));
-        return socialAccountPersistenceMapper.socialAccountEntityToSocialAccount(socialAccountEntity);
+    public Optional<SocialAccount> findById(UUID id) {
+        return socialAccountRepository.findById(id)
+                .map(socialAccountPersistenceMapper::socialAccountEntityToSocialAccount);
     }
 
     @Override
@@ -68,10 +68,11 @@ public class SocialAccountPersistenceAdapter implements SocialAccountRepository 
     }
 
     @Override
-    public SocialAccount deleteById(UUID id) {
-        SocialAccountEntity socialAccountEntity = socialAccountRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("SocialAccount not found with id: " + id));
-        socialAccountRepository.delete(socialAccountEntity);
-        return socialAccountPersistenceMapper.socialAccountEntityToSocialAccount(socialAccountEntity);
+    public Optional<SocialAccount> deleteById(UUID id) {
+        return socialAccountRepository.findById(id)
+                .map(entity -> {
+                    socialAccountRepository.delete(entity);
+                    return socialAccountPersistenceMapper.socialAccountEntityToSocialAccount(entity);
+                });
     }
 }

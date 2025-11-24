@@ -8,11 +8,13 @@ import java.util.UUID;
 public record Company(
         UUID id,
         String name,
-        Instant createdAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 
     public Company {
         DomainValidator.notNullOrBlank(name, "Company name");
+        DomainValidator.notNull(id, "Company ID");
     }
 
     public static CompanyBuilder builder() {
@@ -23,6 +25,7 @@ public record Company(
         private UUID id;
         private String name;
         private Instant createdAt;
+        private Instant updatedAt;
 
         public CompanyBuilder id(UUID id) {
             this.id = id;
@@ -39,8 +42,13 @@ public record Company(
             return this;
         }
 
+        public CompanyBuilder updatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         public Company build() {
-            return new Company(id, name, createdAt);
+            return new Company(id, name, createdAt, updatedAt);
         }
     }
 }

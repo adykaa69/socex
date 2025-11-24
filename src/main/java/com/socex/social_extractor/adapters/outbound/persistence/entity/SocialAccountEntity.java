@@ -37,6 +37,10 @@ public class SocialAccountEntity {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
+    @CreationTimestamp(source = SourceType.DB)
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
     @ManyToOne
     @JoinColumn(name = "company_id",  nullable = false)
     private CompanyEntity company;
@@ -81,6 +85,14 @@ public class SocialAccountEntity {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public CompanyEntity getCompany() {
