@@ -6,6 +6,8 @@ import com.socex.social_extractor.adapters.inbound.web.dto.platform.PlatformResp
 import com.socex.social_extractor.domain.exception.DomainValidationException;
 import com.socex.social_extractor.domain.exception.ResourceAlreadyExistsException;
 import com.socex.social_extractor.domain.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -18,8 +20,11 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<PlatformResponse<ErrorResponse>> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        log.warn("Resource not found", ex);
         return buildResponse(
                 "RESOURCE_NOT_FOUND",
                 ex.getMessage(),
@@ -29,6 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<PlatformResponse<ErrorResponse>> handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
+        log.warn("Resource already exists", ex);
         return buildResponse(
                 "RESOURCE_ALREADY_EXISTS",
                 ex.getMessage(),
@@ -38,6 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DomainValidationException.class)
     public ResponseEntity<PlatformResponse<ErrorResponse>> handleDomainValidationException(DomainValidationException ex) {
+        log.warn("Domain validation failed", ex);
         return buildResponse(
                 "DOMAIN_VALIDATION_ERROR",
                 ex.getMessage(),
@@ -47,6 +54,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<PlatformResponse<ErrorResponse>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.warn("Input validation failed for fields: {}", ex.getBindingResult().getFieldErrors());
+
         List<ValidationError> validationErrors = ex
                 .getBindingResult()
                 .getAllErrors()
@@ -70,6 +79,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<PlatformResponse<ErrorResponse>> handleGeneralException(Exception ex) {
+        log.error("Unexpected error occurred", ex);
         return buildResponse(
                 "INTERNAL_SERVER_ERROR",
                 "An unexpected error occurred",

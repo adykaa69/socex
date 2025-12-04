@@ -1,9 +1,13 @@
 spring:
+  banner:
+    location: classpath:logo.ascii
+
   datasource:
     url: ${MYSQL_JDBC_URL}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
