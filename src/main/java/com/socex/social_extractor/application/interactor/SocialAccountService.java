@@ -34,7 +34,7 @@ public class SocialAccountService implements SocialAccountUseCaseFacade {
         SocialAccount savedSocialAccount = socialAccountRepository.save(socialAccount);
 
         log.info("Social account created successfully. ID: {}, CompanyID: {}, Platform: {}",
-                savedSocialAccount.id(), savedSocialAccount.company().id(), savedSocialAccount.platform());
+                savedSocialAccount.id(), savedSocialAccount.companyId(), savedSocialAccount.platform());
         return savedSocialAccount;
     }
 

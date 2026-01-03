@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record SocialAccount(
         UUID id,
-        Company company,
+        UUID companyId,
         SocialAccountPlatform platform,
         String accountUrl,
         String accountId,
@@ -16,7 +16,7 @@ public record SocialAccount(
 ) {
 
     public SocialAccount {
-        DomainValidator.notNull(company, "Company");
+        DomainValidator.notNull(companyId, "Company ID");
         DomainValidator.notNull(platform, "Platform");
         DomainValidator.notNullOrBlank(accountUrl, "Account URL");
     }
@@ -27,7 +27,7 @@ public record SocialAccount(
 
     public static class SocialAccountBuilder {
         private UUID id;
-        private Company company;
+        private UUID companyId;
         private SocialAccountPlatform platform;
         private String accountUrl;
         private String accountId;
@@ -39,8 +39,8 @@ public record SocialAccount(
             return this;
         }
 
-        public SocialAccountBuilder company(Company company) {
-            this.company = company;
+        public SocialAccountBuilder companyId(UUID companyId) {
+            this.companyId = companyId;
             return this;
         }
 
@@ -70,7 +70,7 @@ public record SocialAccount(
         }
 
         public SocialAccount build() {
-            return new SocialAccount(id, company, platform, accountUrl, accountId, createdAt, updatedAt);
+            return new SocialAccount(id, companyId, platform, accountUrl, accountId, createdAt, updatedAt);
         }
     }
 }

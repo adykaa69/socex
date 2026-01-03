@@ -14,6 +14,6 @@ import java.util.UUID;
 public interface SocialAccountWebMapper {
     CreateSocialAccountCommand socialAccountRequestToCreateSocialAccountCommand(SocialAccountRequest socialAccountRequest);
     UpdateSocialAccountCommand socialAccountRequestToUpdateSocialAccountCommand(UUID id, SocialAccountRequest socialAccountRequest);
-    @Mapping(source = "company.id", target = "companyId")
+    @Mapping(source = "companyId", target = "companyId")
     SocialAccountResponse socialAccountToSocialAccountResponse(SocialAccount socialAccount);
 }
