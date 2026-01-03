@@ -7,6 +7,7 @@ import com.socex.social_extractor.adapters.inbound.web.mapper.CompanyWebMapper;
 import com.socex.social_extractor.application.service.company.CompanyUseCaseFacade;
 import com.socex.social_extractor.application.service.company.command.CreateCompanyCommand;
 import com.socex.social_extractor.application.service.company.command.UpdateCompanyCommand;
+import com.socex.social_extractor.application.service.orchestrator.ServiceOrchestrator;
 import com.socex.social_extractor.domain.model.Company;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -33,11 +34,14 @@ public class CompanyController {
     private static final Logger log = LoggerFactory.getLogger(CompanyController.class);
 
     private final CompanyUseCaseFacade companyUseCaseFacade;
+    private final ServiceOrchestrator serviceOrchestrator;
     private final CompanyWebMapper companyWebMapper;
 
     public CompanyController(CompanyUseCaseFacade companyUseCaseFacade,
+                             ServiceOrchestrator serviceOrchestrator,
                              CompanyWebMapper companyWebMapper) {
         this.companyUseCaseFacade = companyUseCaseFacade;
+        this.serviceOrchestrator = serviceOrchestrator;
         this.companyWebMapper = companyWebMapper;
     }
 
@@ -80,7 +84,7 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.OK)
     public PlatformResponse<CompanyResponse> deleteCompany(@PathVariable UUID id) {
         log.info("Deleting company with ID: {}", id);
-        Company deletedCompany = companyUseCaseFacade.delete(id);
+        Company deletedCompany = serviceOrchestrator.deleteCompany(id);
         CompanyResponse companyResponse = companyWebMapper.companyToCompanyResponse(deletedCompany);
         log.info("Company deleted with ID: {}", id);
 

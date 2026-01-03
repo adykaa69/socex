@@ -15,4 +15,5 @@ public interface SocialAccountRepository {
     List<SocialAccount> findByCompanyIdAndPlatform(UUID companyId, SocialAccountPlatform platform);
     SocialAccount save(SocialAccount socialAccount);
     Optional<SocialAccount> deleteById(UUID id);
+    void deleteAllByCompanyId(UUID companyId);
 }

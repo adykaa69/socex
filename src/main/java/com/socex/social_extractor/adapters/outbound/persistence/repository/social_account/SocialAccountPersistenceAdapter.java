@@ -43,7 +43,6 @@ public class SocialAccountPersistenceAdapter implements SocialAccountRepository 
                 .toList();
     }
 
-    // throw IllegalArgumentException ?
     @Override
     public List<SocialAccount> findByCompanyId(UUID companyId) {
         return socialAccountRepository.findByCompanyId(companyId).stream()
@@ -51,7 +50,6 @@ public class SocialAccountPersistenceAdapter implements SocialAccountRepository 
                 .toList();
     }
 
-    // throw IllegalArgumentException ?
     @Override
     public List<SocialAccount> findByPlatform(SocialAccountPlatform platform) {
         return socialAccountRepository.findByPlatform(platform).stream()
@@ -59,10 +57,9 @@ public class SocialAccountPersistenceAdapter implements SocialAccountRepository 
                 .toList();
     }
 
-    // throw IllegalArgumentException ?
     @Override
     public List<SocialAccount> findByCompanyIdAndPlatform(UUID companyId, SocialAccountPlatform platform) {
-        return socialAccountRepository.findByPlatform(platform).stream()
+        return socialAccountRepository.findByCompanyIdAndPlatform(companyId, platform).stream()
                 .map(socialAccountPersistenceMapper::socialAccountEntityToSocialAccount)
                 .toList();
     }
@@ -74,5 +71,10 @@ public class SocialAccountPersistenceAdapter implements SocialAccountRepository 
                     socialAccountRepository.delete(entity);
                     return socialAccountPersistenceMapper.socialAccountEntityToSocialAccount(entity);
                 });
+    }
+
+    @Override
+    public void deleteAllByCompanyId(UUID companyId) {
+        socialAccountRepository.deleteAllByCompanyId(companyId);
     }
 }
