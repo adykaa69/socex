@@ -5,6 +5,7 @@ import com.socex.social_extractor.adapters.inbound.web.dto.platform.PlatformResp
 import com.socex.social_extractor.adapters.inbound.web.dto.social_account.SocialAccountRequest;
 import com.socex.social_extractor.adapters.inbound.web.dto.social_account.SocialAccountResponse;
 import com.socex.social_extractor.adapters.inbound.web.mapper.SocialAccountWebMapper;
+import com.socex.social_extractor.application.service.orchestrator.ServiceOrchestrator;
 import com.socex.social_extractor.application.service.social_account.SocialAccountUseCaseFacade;
 import com.socex.social_extractor.application.service.social_account.command.CreateSocialAccountCommand;
 import com.socex.social_extractor.application.service.social_account.command.UpdateSocialAccountCommand;
@@ -35,11 +36,14 @@ public class SocialAccountController {
     private static final Logger log = LoggerFactory.getLogger(SocialAccountController.class);
 
     private final SocialAccountUseCaseFacade socialAccountUseCaseFacade;
+    private final ServiceOrchestrator serviceOrchestrator;
     private final SocialAccountWebMapper socialAccountWebMapper;
 
     public SocialAccountController(SocialAccountUseCaseFacade socialAccountUseCaseFacade,
+                                   ServiceOrchestrator serviceOrchestrator,
                                    SocialAccountWebMapper socialAccountWebMapper) {
         this.socialAccountUseCaseFacade = socialAccountUseCaseFacade;
+        this.serviceOrchestrator = serviceOrchestrator;
         this.socialAccountWebMapper = socialAccountWebMapper;
     }
 
@@ -89,7 +93,7 @@ public class SocialAccountController {
 
         CreateSocialAccountCommand command =
                 socialAccountWebMapper.socialAccountRequestToCreateSocialAccountCommand(socialAccountRequest);
-        SocialAccount savedSocialAccount = socialAccountUseCaseFacade.create(command);
+        SocialAccount savedSocialAccount = serviceOrchestrator.createSocialAccount(command);
         SocialAccountResponse socialAccountResponse =
                 socialAccountWebMapper.socialAccountToSocialAccountResponse(savedSocialAccount);
 

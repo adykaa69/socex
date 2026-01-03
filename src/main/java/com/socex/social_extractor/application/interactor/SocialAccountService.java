@@ -84,6 +84,13 @@ public class SocialAccountService implements SocialAccountUseCaseFacade {
     }
 
     @Override
+    public void deleteSocialAccountsByCompanyId(UUID companyId) {
+        log.debug("Initiating deletion of social accounts for CompanyID: {}", companyId);
+        socialAccountRepository.deleteAllByCompanyId(companyId);
+        log.info("All social accounts for CompanyID: {} have been deleted.", companyId);
+    }
+
+    @Override
     public SocialAccount update(UpdateSocialAccountCommand command) {
         log.debug("Initiating update of social account with ID: {}", command.id());
         SocialAccount existingSocialAccount = getSocialAccountById(command.id());

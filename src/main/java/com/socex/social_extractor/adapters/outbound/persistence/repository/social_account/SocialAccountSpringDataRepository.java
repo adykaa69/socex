@@ -10,5 +10,6 @@ import java.util.UUID;
 public interface SocialAccountSpringDataRepository extends JpaRepository<SocialAccountEntity, UUID> {
     List<SocialAccountEntity> findByCompanyId(UUID companyId);
     List<SocialAccountEntity> findByPlatform(SocialAccountPlatform platform);
-    SocialAccountEntity findByCompanyIdAndPlatform(UUID companyId, SocialAccountPlatform platform);
+    List<SocialAccountEntity> findByCompanyIdAndPlatform(UUID companyId, SocialAccountPlatform platform);
+    void deleteAllByCompanyId(UUID companyId);
 }
